@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player/TwinStickShipZed.cs">
+    <Files>
+      <File FileName="Assets/Scripts/EnemySpawner.cs" Line="30" Column="25" />
+      <File FileName="Assets/Plugins/whydoidoit.com/FSM/StateMachineBehaviourEx.cs" Line="605" Column="29" />
+      <File FileName="Assets/Scripts/StateMachine/StateBehavior.cs" Line="25" Column="3" />
+      <File FileName="Assets/Scripts/StateMachine/Enemy.cs" Line="107" Column="15" />
+      <File FileName="Assets/Scripts/StateMachine/Followings/FollowingBehavior.cs" Line="16" Column="2" />
+      <File FileName="Assets/Scripts/StateMachine/Attacks/AttackBehavior.cs" Line="12" Column="18" />
+      <File FileName="Assets/Scripts/Player/TwinStickShipZed.cs" Line="30" Column="27" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
