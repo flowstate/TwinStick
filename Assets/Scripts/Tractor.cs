@@ -28,7 +28,7 @@ public class Tractor : MonoBehaviour {
 	
 	void SetRotation(){
 		
-		Plane playerPlane = new Plane(Vector3.forward, _transform.position);
+		/*Plane playerPlane = new Plane(Vector3.forward, _transform.position);
 		Ray hitRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 		
 		float hitDist = 0.0f;
@@ -41,7 +41,7 @@ public class Tractor : MonoBehaviour {
 			Quaternion targetRotation = Quaternion.LookRotation(targetRotVector - _transform.position);
 			_transform.rotation = Quaternion.Slerp(_transform.rotation,targetRotation, 1); 
 			//SetAreaLocation(targetPoint);
-		}
+		}*/
 	}
 	
 	void SetAreaLocation(Vector3 tPoint){

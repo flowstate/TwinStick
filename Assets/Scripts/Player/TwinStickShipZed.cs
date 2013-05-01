@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TwinStickShipZed : MonoBehaviour {
 
-		public float moveSpeed = 5;
+		public float moveSpeed = 10;
 	Transform _transform;
 	Vector3 moveDirection, fireDirection;
 	public float fireDelay = 0.2f;

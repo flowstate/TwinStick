@@ -28,7 +28,14 @@ public class TractorZed : MonoBehaviour {
 	
 	void SetRotation(){
 		
-		Plane playerPlane = new Plane(Vector3.up, _transform.position);
+		if(Input.GetAxis("FireHorizontal") != 0 || Input.GetAxis("FireVertical") != 0){
+			Vector3 targetRotVector = new Vector3(Input.GetAxis("FireHorizontal"), 0, Input.GetAxis("FireVertical")).normalized;
+			Quaternion targetRotation = Quaternion.LookRotation(targetRotVector);
+			_transform.rotation = Quaternion.Slerp(_transform.rotation,targetRotation, 1); 
+		}
+		
+		
+		/*Plane playerPlane = new Plane(Vector3.up, _transform.position);
 		Ray hitRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 		
 		float hitDist = 0.0f;
@@ -42,7 +49,7 @@ public class TractorZed : MonoBehaviour {
 			Quaternion targetRotation = Quaternion.LookRotation((targetRotVector - _transform.position).normalized);
 			_transform.rotation = Quaternion.Slerp(_transform.rotation,targetRotation, 1); 
 			//SetAreaLocation(targetPoint);
-		}
+		}*/
 	}
 	
 	void SetAreaLocation(Vector3 tPoint){

@@ -19,7 +19,7 @@ public class TractorBeam : MonoBehaviour {
 			if(captive == null){
 				isActive = true;
 			}else{
-				if(Input.GetMouseButtonDown(0)){
+				if(Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fling")){
 				doFling = true;
 				}
 			}

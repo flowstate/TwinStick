@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour {
 	}
 	
 	void Update(){
-		if(Input.GetKeyDown(KeyCode.P)){
+		if(Input.GetKeyDown(KeyCode.P) || Input.GetButtonDown("Circle")){
 		
 			SpawnEnemy();
 		}
