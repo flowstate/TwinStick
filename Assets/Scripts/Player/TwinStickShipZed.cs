@@ -3,30 +3,56 @@ using System.Collections;
 
 public class TwinStickShipZed : MonoBehaviour {
 
-		public float moveSpeed = 10;
+	public float moveSpeed = 10;
 	Transform _transform;
 	Vector3 moveDirection, fireDirection;
 	public float fireDelay = 0.2f;
 	public GameObject bullet;
 	public float bulletSpeed = 10;
 	Rigidbody _rigidbody;
+	public bool debug = true;
+	public GameObject mSpeed;
+	UILabel moveSpeedText;
 	
 	// Use this for initialization
 	void Start () {
 		_transform = transform;	
 		_rigidbody = rigidbody;
+		InitLabels();
 		//StartCoroutine(FiringTimer());
+	}
+	
+	void InitLabels(){
+		moveSpeedText = mSpeed.GetComponent<UILabel>();
+		
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		
+		if(debug){
+			moveSpeedText.text = moveSpeed.ToString("00");
+			
+			if(Input.GetKeyDown(KeyCode.UpArrow)){
+				moveSpeed += 1;
+			}
+			if(Input.GetKeyDown(KeyCode.DownArrow)){
+				moveSpeed -= 1;
+			}
+		}
+
 		moveDirection = new Vector3(Input.GetAxis("Horizontal"),0, Input.GetAxis("Vertical"));
-		_rigidbody.MovePosition(_transform.position + moveDirection * Time.deltaTime * moveSpeed);
+		rigidbody.MovePosition(_transform.position + moveDirection * Time.deltaTime * moveSpeed);
+
+		
+		
 			
 	}
 	
+	
+	
 	void Update(){
-		if(Input.GetKeyDown(KeyCode.Return)){
+		if(Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Restart")){
 			Application.LoadLevel(0);
 		}
 	}
