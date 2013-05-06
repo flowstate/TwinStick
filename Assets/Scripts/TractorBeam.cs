@@ -7,10 +7,11 @@ public class TractorBeam : MonoBehaviour {
 	float foldTime = 1;
 	bool isActive = true;
 	bool doFling = false;
+	TractorZed parentTractor;
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
-		
+		parentTractor = _transform.parent.GetComponent<TractorZed>();
 	}
 	
 	// Update is called once per frame
@@ -43,6 +44,8 @@ public class TractorBeam : MonoBehaviour {
 		if(isActive){
 			col.transform.parent = _transform;
 			captive = col.transform;
+			SetCaptured(true);
+			
 			captive.gameObject.layer = LayerMask.NameToLayer("PlayerBullets");
 			isActive = false;
 			//StartCoroutine(BringToTheFold(col.transform));
@@ -54,6 +57,7 @@ public class TractorBeam : MonoBehaviour {
 		captive.parent = null;
 		captive.rigidbody.AddExplosionForce(1000,_transform.parent.transform.position,10);
 		captive = null;
+		SetCaptured(false);
 		isActive = true;
 	}
 	
@@ -87,6 +91,10 @@ public class TractorBeam : MonoBehaviour {
 			yield return null;
 		}
 		
+	}
+	
+	void SetCaptured(bool value){
+		parentTractor.SetCaptured(value);
 	}
 	
 }

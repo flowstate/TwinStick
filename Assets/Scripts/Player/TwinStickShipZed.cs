@@ -12,6 +12,7 @@ public class TwinStickShipZed : MonoBehaviour {
 	Rigidbody _rigidbody;
 	public bool debug = true;
 	public GameObject mSpeed;
+	public bool hasCaptured = false;
 	UILabel moveSpeedText;
 	
 	// Use this for initialization

@@ -4,6 +4,7 @@ using System.Collections;
 public class TractorZed : MonoBehaviour {
 	
 	public float rotateSpeed = 60.0f;
+	TwinStickShipZed parentShip;
 	Transform _transform;
 	public LayerMask mask;
 	Transform _beamTransform;
@@ -11,12 +12,14 @@ public class TractorZed : MonoBehaviour {
 		maxDistance = 15;
 	float minDistanceSquared, maxDistanceSquared, mouseDistanceSquared;
 	Vector3 areaLocation;
+	public bool captured = false;
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
 		_beamTransform = _transform.Find("TractorArea");
 		minDistanceSquared = minDistance * minDistance;
 		maxDistanceSquared = maxDistance * maxDistance;
+		parentShip = _transform.parent.GetComponent<TwinStickShipZed>();
 		
 	}
 	
@@ -69,5 +72,10 @@ public class TractorZed : MonoBehaviour {
 			// _beamTransform.position = Vector3.ClampMagnitude(tPoint,5.0f);
 		}
 		
+	}
+	
+	public void SetCaptured(bool value){
+		captured = value;
+		parentShip.hasCaptured = value;
 	}
 }
