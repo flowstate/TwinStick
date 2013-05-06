@@ -1,0 +1,12 @@
+TODO:
+=========
+
+Convert FodderEnemy to StateMachineEnemy
+Add EnemyStates.FLUNG 
+Add timer to flung status, after which enemy returns to normal
+Add public GameObject shotObject to Attack State
+Add triple shot with mirrored Sines
+Add EnemyManager which owns EnemySpawners
+Add modifier to hold while you have a capture that charges them with "secondary fire"
+	Set fodder enemy  to detect collision with Secondary, increase scale and mass
+	Moves slower, does more damage to enemies
