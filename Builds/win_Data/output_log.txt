@@ -17,7 +17,7 @@ Platform assembly: C:\Users\Bozzley\Documents\GitHub\TwinStick\Builds\win_Data\M
 Loading C:\Users\Bozzley\Documents\GitHub\TwinStick\Builds\win_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
 Platform assembly: C:\Users\Bozzley\Documents\GitHub\TwinStick\Builds\win_Data\Managed\PlayMaker.dll (this message is harmless)
 Loading C:\Users\Bozzley\Documents\GitHub\TwinStick\Builds\win_Data\Managed\PlayMaker.dll into Unity Child Domain
-- Completed reload, in  0.033 seconds
+- Completed reload, in  0.102 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
