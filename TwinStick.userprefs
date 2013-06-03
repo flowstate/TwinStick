@@ -2,7 +2,6 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Enemy\Bosses\WeakPointBoss.cs">
     <Files>
-<<<<<<< HEAD
       <File FileName="Assets\Scripts\Player\TwinStickShipZed.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Misc\AnimateColor.cs" Line="13" Column="32" />
       <File FileName="Assets\Scripts\Player\InvincibleShip.cs" Line="11" Column="36" />
@@ -12,28 +11,6 @@
       <File FileName="Assets\Scripts\Projectiles\SplitBullet.cs" Line="17" Column="18" />
       <File FileName="Assets\Scripts\Enemy\Bosses\WeakPointBoss.cs" Line="56" Column="2" />
       <File FileName="Assets\Scripts\Enemy\Bosses\SecondPhase.cs" Line="20" Column="23" />
-=======
-<<<<<<< HEAD
-      <File FileName="Assets\Scripts\EnemySpawner.cs" Line="17" Column="3" />
-      <File FileName="Assets\Scripts\StateMachine\Enemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FollowPlayer.cs" Line="12" Column="13" />
-      <File FileName="Assets\Scripts\StateMachine\Followings\FollowingBehavior.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\StateMachine\Attacks\AttackBehavior.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player\TwinStickShipZed.cs" Line="41" Column="5" />
-      <File FileName="Assets\Scripts\Player\RotateUnitCircle.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TractorBeam.cs" Line="46" Column="52" />
-      <File FileName="Assets\Scripts\GibOnCollide.cs" Line="22" Column="45" />
-=======
-      <File FileName="Assets/Scripts/EnemySpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/StateMachine/Enemy.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/StateMachine/Followings/FollowingBehavior.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/StateMachine/Attacks/AttackBehavior.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player/TwinStickShipZed.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Tractor.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player/RotateUnitCircle.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/TractorBeam.cs" Line="22" Column="67" />
->>>>>>> Committed from Mac
->>>>>>> Committed from Mac
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
