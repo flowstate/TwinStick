@@ -5,7 +5,13 @@ using System.Collections;
 /// Base class for all state machine behaviors. Allows for reflection in state switching.
 /// </summary>
 public class StateBehavior : MonoBehaviour {
-
+	
+	public Enemy owner;
+	
+	public void SetOwner(Enemy caller){
+		owner = caller;
+	}
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -27,6 +33,9 @@ public class StateBehavior : MonoBehaviour {
 			Debug.Log("I'm the default Update behavior. What up?");
 		}
 	}
+	
+	public virtual void DoAwake(){}
+	
 	public virtual void DoLateUpdate(){}
 	public virtual void DoFixedUpdate(){}
 	
@@ -44,6 +53,16 @@ public class StateBehavior : MonoBehaviour {
 	public virtual void DoOnTriggerEnter(Collider col){}
 	public virtual void DoOnTriggerExit(Collider col){}
 	public virtual void DoOnTriggerStay(Collider col){}
+	
+	public virtual void DoEnter(){}
+	
+	public static IEnumerator EnterState(){
+		yield break;
+	}
+	
+	public static IEnumerator ExitState(){
+		yield break;
+	}
 	
 	#endregion
 }

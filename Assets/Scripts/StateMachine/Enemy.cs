@@ -8,6 +8,8 @@ public enum EnemyStates{
 	PATROL,
 	FOLLOWING,
 	ATTACK,
+    CAPTURED,
+    FLUNG
 }
 
 public class Enemy : MonoBehaviour {
@@ -17,30 +19,35 @@ public class Enemy : MonoBehaviour {
 	/// Class that represents the settings for a particular state
 	/// </summary>
 	public class State
-	{
-		public String stateName;
-		public Action DoUpdate = DoNothing;
-		public Action DoLateUpdate = DoNothing;
-		public Action DoFixedUpdate = DoNothing;
-		public Action<Collider> DoOnTriggerEnter = DoNothingCollider;
-		public Action<Collider> DoOnTriggerStay = DoNothingCollider;
-		public Action<Collider> DoOnTriggerExit = DoNothingCollider;
-		public Action<Collision> DoOnCollisionEnter = DoNothingCollision;
-		public Action<Collision> DoOnCollisionStay = DoNothingCollision;
-		public Action<Collision> DoOnCollisionExit = DoNothingCollision;
-		public Action DoOnMouseEnter = DoNothing;
-		public Action DoOnMouseUp = DoNothing;
-		public Action DoOnMouseDown = DoNothing;
-		public Action DoOnMouseOver = DoNothing;
-		public Action DoOnMouseExit = DoNothing;
-		public Action DoOnMouseDrag = DoNothing;
-		public Action DoOnGUI = DoNothing;
-		public Func<IEnumerator> enterState = DoNothingCoroutine;
-		public Func<IEnumerator> exitState = DoNothingCoroutine;
-		public IEnumerator enterStateEnumerator = null;
-		public IEnumerator exitStateEnumerator = null;
+    {
+        #region
+        public String stateName;
+        public Action DoAwake = DoNothing;
+        public Action DoUpdate = DoNothing;
+        public Action DoLateUpdate = DoNothing;
+        public Action DoFixedUpdate = DoNothing;
+        public Action<Collider> DoOnTriggerEnter = DoNothingCollider;
+        public Action<Collider> DoOnTriggerStay = DoNothingCollider;
+        public Action<Collider> DoOnTriggerExit = DoNothingCollider;
+        public Action<Collision> DoOnCollisionEnter = DoNothingCollision;
+        public Action<Collision> DoOnCollisionStay = DoNothingCollision;
+        public Action<Collision> DoOnCollisionExit = DoNothingCollision;
+        public Action DoOnMouseEnter = DoNothing;
+        public Action DoOnMouseUp = DoNothing;
+        public Action DoOnMouseDown = DoNothing;
+        public Action DoOnMouseOver = DoNothing;
+        public Action DoOnMouseExit = DoNothing;
+        public Action DoOnMouseDrag = DoNothing;
+        public Action DoOnGUI = DoNothing;
+        public Func<IEnumerator> enterState = DoNothingCoroutine;
+        public Func<IEnumerator> exitState = DoNothingCoroutine;
+        public IEnumerator enterStateEnumerator = null;
+        public IEnumerator exitStateEnumerator = null;
+        #endregion
+        
 		
 		public State(StateBehavior behavior){
+			DoAwake = (Action)Delegate.CreateDelegate(DoUpdate.GetType(),behavior,"DoAwake");
 			DoUpdate = (Action)Delegate.CreateDelegate(DoUpdate.GetType(),behavior,"DoUpdate");
 			DoLateUpdate = (Action)Delegate.CreateDelegate(DoLateUpdate.GetType(),behavior,"DoLateUpdate");
 			DoFixedUpdate = (Action)Delegate.CreateDelegate(DoFixedUpdate.GetType(),behavior, "DoFixedUpdate");
@@ -59,6 +66,25 @@ public class Enemy : MonoBehaviour {
 			DoOnMouseOver = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseOver");
 			DoOnMouseExit = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseExit");
 			DoOnMouseDrag = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseDrag");
+			
+			MethodInfo enterMethod = behavior.GetType().GetMethod("EnterState",System.Reflection.BindingFlags.Instance 
+            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
+			
+			if(enterMethod != null){
+				enterState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),enterMethod);
+			}
+			
+			MethodInfo exitMethod = behavior.GetType().GetMethod("EnterState",System.Reflection.BindingFlags.Instance 
+            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
+			
+			if(exitMethod != null){
+				exitState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),enterMethod);
+			}
+			
+			/*enterState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),behavior,"EnterState",System.Reflection.BindingFlags.Instance 
+            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
+			exitState = (Func<IEnumerator>)Delegate.CreateDelegate(exitState.GetType(),behavior,"ExitState",System.Reflection.BindingFlags.Instance 
+            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);*/
 		}
 		
 		/*
@@ -75,36 +101,18 @@ public class Enemy : MonoBehaviour {
 		public StateMachineBehaviourEx executingStateMachine; */
 	}
 	
-	
-	#region Delegate Members
-	public Action DoUpdate = DoNothing;
-	public Action DoLateUpdate = DoNothing;
-	public Action DoFixedUpdate = DoNothing;
-	public Action<Collider> DoOnTriggerEnter = DoNothingCollider;
-	public Action<Collider> DoOnTriggerStay = DoNothingCollider;
-	public Action<Collider> DoOnTriggerExit = DoNothingCollider;
-	public Action<Collision> DoOnCollisionEnter = DoNothingCollision;
-	public Action<Collision> DoOnCollisionStay = DoNothingCollision;
-	public Action<Collision> DoOnCollisionExit = DoNothingCollision;
-	public Action DoOnMouseEnter = DoNothing;
-	public Action DoOnMouseUp = DoNothing;
-	public Action DoOnMouseDown = DoNothing;
-	public Action DoOnMouseOver = DoNothing;
-	public Action DoOnMouseExit = DoNothing;
-	public Action DoOnMouseDrag = DoNothing;
-	public Action DoOnGUI = DoNothing;
-	public Action DoLog = BasicLog;
-	public Func<IEnumerator> ExitState = DoNothingCoroutine;
-	#endregion
-	
 	List<State> stateList = new List<State>();
+	
 	[HideInInspector]
 	public State state
 	{
 		get{return stateList[(int)currentState];}
 	}
 	
-	Transform _transform;
+	public Transform _transform;
+	public GameObject target;
+	public Transform targetTransform;
+	
 	[HideInInspector]
 	public AttackBehavior _attack;
 	
@@ -113,7 +121,13 @@ public class Enemy : MonoBehaviour {
 	
 	[HideInInspector]
 	public PatrolBehavior _patrol;
-	
+
+    [HideInInspector]
+    public CapturedBehavior _captured;
+
+    [HideInInspector]
+    public FlungBehavior _flung;
+
 	EnemyStates _currentState;
 	public EnemyStates currentState
 	{	
@@ -128,61 +142,97 @@ public class Enemy : MonoBehaviour {
 		_attack = _transform.GetComponent<AttackBehavior>();
 		_patrol = _transform.GetComponent<PatrolBehavior>();
 		_following = _transform.GetComponent<FollowingBehavior>();
+        _captured = _transform.GetComponent<CapturedBehavior>();
+        _flung = _transform.GetComponent<FlungBehavior>();
+        CheckStates();
 		InitializeStates();
 		currentState = EnemyStates.PATROL;
 	}
+
+    private void CheckStates()
+    {
+        if (!_attack)
+        {
+            Debug.Log("Attack is null");
+        }
+        if (!_patrol)
+        {
+            Debug.Log("Patrol is null");
+
+        }
+        if (!_following)
+        {
+            Debug.Log("Following is null");
+        }
+        if (!_captured)
+        {
+            Debug.Log("Captured is null");
+        }
+        if (!_flung)
+        {
+            Debug.Log("Flung is null");
+        }
+
+        if (_attack && _patrol && _following && _captured && _flung)
+        {
+            Debug.Log("Nothing is null");
+
+        }
+    }
 	
 	void InitializeStates(){
-		// for each item in enum
-		foreach(EnemyStates eState in Enum.GetValues(typeof(EnemyStates)))
-		{
-			
-			Debug.Log(eState.ToString());
-			
-			// reflect on the behaviour
-			String bName = "_" + eState.ToString().ToLower();
-			Debug.Log(bName);
-			FieldInfo bField = GetType().GetField(bName);
-			if(bField == null)
-			{
-				Debug.Log("No behavior called " + bName );
-				
-				// wire in base null behavior
-			}
-			else
-			{
-				StateBehavior tempBehavior = (StateBehavior)bField.GetValue(this);
-				if(tempBehavior == null)
-				{
-					Debug.Log("Null in else");
-				}
-				else
-				{
-					State tempState = new State(tempBehavior);
-					stateList.Add(tempState);
-				}
-				
-			}
-			
-		}
+        
+            // for each item in enum
+            foreach (EnemyStates eState in Enum.GetValues(typeof(EnemyStates)))
+            {
+                try
+                {
+                    // reflect on the behaviour
+                String bName = "_" + eState.ToString().ToLower();
+
+                FieldInfo bField = GetType().GetField(bName);
+                if (bField == null)
+                {
+
+
+                    // wire in base null behavior
+                }
+                else
+                {
+                    StateBehavior tempBehavior = (StateBehavior)bField.GetValue(this);
+                    tempBehavior.SetOwner(this);
+                    tempBehavior.DoAwake();
+                    if (tempBehavior == null)
+                    {
+                        Debug.Log("Null in else");
+                    }
+                    else
+                    {
+                        State tempState = new State(tempBehavior);
+                        stateList.Add(tempState);
+                    }
+
+                }
+                }
+                catch(Exception e)
+                {
+                    Debug.Log("Error setting state " + eState.ToString() + ": " + e.Message);
+                    Debug.Log(e.StackTrace);
+                }
+                
+
+            }
+       
+		
 		
 		Debug.Log("Number of states in list: " + stateList.Count);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-		if(Input.GetKeyDown(KeyCode.A)){
-			IncrementState();
-			Debug.Log("Current State: " + currentState.ToString());
-		}
-		state.DoUpdate();
-		
-		
-	}
+	
 	
 	public void SwitchState(EnemyStates newState){
-		Debug.Log("Executing SwitchState, properties work!");
+		
 		if(currentState == newState){
 			Debug.Log("CurrentState == newState");
 			return;
@@ -190,31 +240,37 @@ public class Enemy : MonoBehaviour {
 		
 		// execute exit for current state
 		Debug.Log("Exiting current state: " + currentState.ToString());
+		StartCoroutine(state.enterState());
 		// discover and set up new state
 		_currentState = newState;
 		
 		// execute enter for new state
+		StartCoroutine(state.exitState());
 		Debug.Log("Entering new state: " + currentState.ToString());
 	}
 	
-	void ConfigureState(){
-		
-		
-	}
-	
-	void IncrementState(){
-		if(currentState == EnemyStates.PATROL)
-			currentState = EnemyStates.ATTACK;
-		else
-			currentState = EnemyStates.PATROL;
+	void Update () {
+		state.DoUpdate();
 	}
 	
 	void FixedUpdate(){
-		
+		state.DoFixedUpdate();
 	}
 	
 	void LateUpdate(){
-		
+		state.DoLateUpdate();
+	}
+	
+	void OnCollisionEnter(Collision collision){
+		state.DoOnCollisionEnter(collision);
+	}
+	
+	void OnCollisionExit(Collision collision){
+		state.DoOnCollisionExit(collision);
+	}
+	
+	void OnCollisionStay(Collision collision){
+		state.DoOnCollisionStay(collision);
 	}
 	
 	#region Default Implementations Of Delegates
@@ -235,10 +291,7 @@ public class Enemy : MonoBehaviour {
 	static void DoNothingCollision(Collision other)
 	{
 	}
-	
-	static void BasicLog(){
-		Debug.Log("I'm a basic log!!");
-	}
+
 	
 	#endregion
 
