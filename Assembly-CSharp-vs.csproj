@@ -163,7 +163,10 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
      <Compile Include="Assets\OutputJoystick.cs" />
+     <Compile Include="Assets\Scripts\BossTriggerArea.cs" />
      <Compile Include="Assets\Scripts\Camera\SmoothFollowTarget.cs" />
+     <Compile Include="Assets\Scripts\Debug\DebugSpawnManager.cs" />
+     <Compile Include="Assets\Scripts\Debug\DebugSpawner.cs" />
      <Compile Include="Assets\Scripts\DebugController.cs" />
      <Compile Include="Assets\Scripts\Enemy\Bosses\SecondPhase.cs" />
      <Compile Include="Assets\Scripts\Enemy\Bosses\WeakPoint.cs" />
@@ -204,6 +207,7 @@
      <Compile Include="Assets\Scripts\StateMachine\Flung\FlungBehavior.cs" />
      <Compile Include="Assets\Scripts\StateMachine\Followings\FollowingBehavior.cs" />
      <Compile Include="Assets\Scripts\StateMachine\Followings\SeekPlayer.cs" />
+     <Compile Include="Assets\Scripts\StateMachine\Followings\StutterFollow.cs" />
      <Compile Include="Assets\Scripts\StateMachine\Patrols\NullPatrol.cs" />
      <Compile Include="Assets\Scripts\StateMachine\Patrols\PatrolBehavior.cs" />
      <Compile Include="Assets\Scripts\StateMachine\StateBehavior.cs" />
@@ -218,6 +222,7 @@
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderRGB.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
      <None Include="Assets\NGUI\Examples\Models\Orc\Orc Skin.shader" />
+     <None Include="Assets\Textures\Fonts\Consolas.fnt" />
      <None Include="Assets\NGUI\Examples\Atlases\Wooden\Arimo20.txt" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ShowAlphaChannel.shader" />
      <None Include="Assets\NGUI\Examples\Atlases\Wooden\Arimo14.txt" />

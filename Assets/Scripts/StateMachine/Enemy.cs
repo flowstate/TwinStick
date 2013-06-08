@@ -129,6 +129,8 @@ public class Enemy : MonoBehaviour {
     public FlungBehavior _flung;
 
 	EnemyStates _currentState;
+    private EnemyStates previousState;
+
 	public EnemyStates currentState
 	{	
 		get{return _currentState;}
@@ -242,6 +244,7 @@ public class Enemy : MonoBehaviour {
 		Debug.Log("Exiting current state: " + currentState.ToString());
 		StartCoroutine(state.enterState());
 		// discover and set up new state
+	    previousState = _currentState;
 		_currentState = newState;
 		
 		// execute enter for new state
@@ -249,6 +252,11 @@ public class Enemy : MonoBehaviour {
 		Debug.Log("Entering new state: " + currentState.ToString());
 	}
 	
+    public void GoToLastState()
+    {
+        currentState = previousState;
+    }
+
 	void Update () {
 		state.DoUpdate();
 	}

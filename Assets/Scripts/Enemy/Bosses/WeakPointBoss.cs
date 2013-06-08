@@ -73,6 +73,11 @@ public class WeakPointBoss : MonoBehaviour {
 		currentWeakPoints = wpList.Count;
 	}
 	
+    public void PlayerInRange()
+    {
+        
+    }
+
 	void StartNextPhase(){
 		if(nextPhase != null){
 			nextPhase.SetActive(true);

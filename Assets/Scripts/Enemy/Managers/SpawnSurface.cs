@@ -10,7 +10,7 @@ public class SpawnSurface : MonoBehaviour {
     public bool IsFlashing { get; set; }
     public GameObject spawnPoint, originPoint;
     public GameObject risingBox;
-    public GameObject objectToSpawn;
+    public GameObject objectToSpawn { get; set; }
     public GameObject target;
     public GameObject owner;
     public LayerMask collisionMask;
