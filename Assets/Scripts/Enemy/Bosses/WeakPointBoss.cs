@@ -26,7 +26,6 @@ public class WeakPointBoss : MonoBehaviour {
 			}
 		}
 		
-		Debug.Log("I have " + wpList.Count + " weak points. Please don't shoot me!");
 	}
 	
 	// Update is called once per frame
@@ -36,18 +35,6 @@ public class WeakPointBoss : MonoBehaviour {
 			// kill a weakpoint
 			wpList[currentWeakPoints - 1].SetActive(false);		
 			WeakPointKilled();
-		}
-	}
-
-	void DetectWeakPoint(GameObject wPoint)
-	{
-		Debug.Log("Detecting weak point");
-		if (wpList.Contains(wPoint))
-		{
-			Debug.Log("Found the weak point");
-			GameObject detected = wpList.Find(item => item.Equals(wPoint));
-
-
 		}
 	}
 
