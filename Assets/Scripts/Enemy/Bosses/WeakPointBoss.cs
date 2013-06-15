@@ -8,16 +8,22 @@ public class WeakPointBoss : MonoBehaviour {
 	
 	
 	int numWeakPoints = 3;
-	int currentWeakPoints = 3;
+	int aliveWeakPoints = 3;
 	List<GameObject> wpList;
+    public float firingDelay = 2.0f;
+    public GameObject projectile;
+    public GameObject enemySpawningProjectile;
+
 	
 	// Use this for initialization
 	void Start () {
 		wpList = new List<GameObject>();
 		
 		PopulateWeakPoints();
+
 	}
-	
+
+    
 	void PopulateWeakPoints(){
 		foreach(Transform child in transform){
 			if(child.gameObject.name.Equals("WeakPoint")){
@@ -31,17 +37,16 @@ public class WeakPointBoss : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if(Input.GetKeyDown(KeyCode.K)){
+		if(Input.GetKeyDown(KeyCode.Alpha1)){
 			// kill a weakpoint
-			wpList[currentWeakPoints - 1].SetActive(false);		
-			WeakPointKilled();
+			StartNextPhase();
 		}
 	}
 
 	public void WeakPointKilled(){
-		currentWeakPoints--;
-		Debug.Log("Killed a weakpoint. I have " + currentWeakPoints + " left.");
-		if(currentWeakPoints == 0){
+		aliveWeakPoints--;
+		Debug.Log("Killed a weakpoint. I have " + aliveWeakPoints + " left.");
+		if(aliveWeakPoints == 0){
 			AllWeakPointsDestroyed();
 		}
 		
@@ -57,19 +62,23 @@ public class WeakPointBoss : MonoBehaviour {
 		foreach(GameObject child in wpList){
 			child.SetActive(true);
 		}
-		currentWeakPoints = wpList.Count;
+		aliveWeakPoints = wpList.Count;
 	}
 	
     public void PlayerInRange()
     {
-        
+        // start the firing
     }
 
 	void StartNextPhase(){
-		if(nextPhase != null){
+		if(nextPhase != null)
+		{
+		    nextPhase.transform.parent = null;
 			nextPhase.SetActive(true);
 		}
 		
 		Destroy(this.gameObject);
 	}
+
+    
 }

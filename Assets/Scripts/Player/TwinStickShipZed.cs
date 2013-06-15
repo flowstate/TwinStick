@@ -13,15 +13,14 @@ public class TwinStickShipZed : MonoBehaviour
     public float maxDragVelocity = 15f;
     public float maxTotalVelocity = 20f;
     private Transform _transform;
-    private Vector3 moveDirection, fireDirection;
     private float startingDrag;
     private Rigidbody _rigidbody;
     private UILabel moveSpeedText;
-    private bool invincible;
+    private bool invincible, canPlayerControl;
     private float speedSquared;
+    private Hashtable tweenTable;
 
     private float sqrStartDragVelocity,
-                  sqrMaxDragVelocity,
                   sqrDragVelocityRange,
                   sqrMaxVelocity;
 
@@ -43,6 +42,7 @@ public class TwinStickShipZed : MonoBehaviour
     void Start()
     {
 
+        canPlayerControl = true;
         _transform = transform;
         _rigidbody = rigidbody;
         startingDrag = _rigidbody.drag;
@@ -53,6 +53,15 @@ public class TwinStickShipZed : MonoBehaviour
 
     void Initialize()
     {
+        tweenTable = new Hashtable();
+        tweenTable.Add("x", 0f);
+        tweenTable.Add("z", -42f);
+        tweenTable.Add("time", 3f);
+        tweenTable.Add("easetype", iTween.EaseType.linear);
+        tweenTable.Add("oncomplete", "ResumePlayerControl");
+        tweenTable.Add("oncompletetarget", gameObject);
+        tweenTable.Add("onstart", "DisablePlayerControl");
+        tweenTable.Add("onstarttarget", gameObject);
         sqrStartDragVelocity = startDragVelocity*startDragVelocity;
         sqrDragVelocityRange = (maxDragVelocity*maxDragVelocity) - sqrStartDragVelocity;
         sqrMaxVelocity = maxTotalVelocity*maxTotalVelocity;
@@ -125,13 +134,24 @@ public class TwinStickShipZed : MonoBehaviour
         
         // add force from the joystick
         //Vector3 joystickForce = new Vector3(Horizontal, 0f, Vertical);
-        Vector3 joystickForce = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        rigidbody.AddForce(joystickForce.normalized * (speedSquared + speedSquared));
+        if (canPlayerControl)
+        {
+            Vector3 joystickForce = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            rigidbody.AddForce(joystickForce.normalized * (speedSquared + speedSquared));    
+        }
+        
 
     }
 
     
+    public void MoveTween(Vector3 position, float time)
+    {
+        tweenTable["x"] = position.x;
+        tweenTable["z"] = position.z;
+        tweenTable["time"] = time;
 
+        iTween.MoveTo(gameObject, tweenTable);
+    }
 
     void Update()
     {
@@ -142,7 +162,7 @@ public class TwinStickShipZed : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Restart"))
         {
-            Application.LoadLevel(0);
+            Application.LoadLevel(Application.loadedLevel);
         }
     }
 
@@ -180,5 +200,15 @@ public class TwinStickShipZed : MonoBehaviour
         invincible = false;
         // yield return
         // make not invincible
+    }
+
+    public void ResumePlayerControl()
+    {
+        canPlayerControl = true;
+    }
+
+    public void DisablePlayerControl()
+    {
+        canPlayerControl = false;
     }
 }

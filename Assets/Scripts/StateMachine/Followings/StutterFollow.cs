@@ -27,6 +27,7 @@ public class StutterFollow : FollowingBehavior
     public override void DoAwake()
     {
         target = owner.target;
+        
         targetTransform = target.transform;
         _transform = transform;
         _rigidbody = rigidbody;
@@ -70,7 +71,6 @@ public class StutterFollow : FollowingBehavior
 
         aimVector = aimVector.normalized*TravelDistance;
 
-        Debug.Log("New hashVector: " + moveTable["amount"].ToString());
         // set moveTable
         moveTable["amount"] = aimVector;
         moveTable["time"] = tempTime;
@@ -90,35 +90,34 @@ public class StutterFollow : FollowingBehavior
         RotateTowardsTarget();
     }
 
-    public static IEnumerator EnterState()
+    public IEnumerator EnterState()
     {
         Debug.Log("Entering Stutter");
-
+        ResumeAnimations();
         yield return null;
     }
 
-    public static IEnumerator ExitState()
+    private void ResumeAnimations()
     {
+        iTween.Resume(gameObject, "moveTween");
+    }
+
+    public IEnumerator ExitState()
+    {
+
         Debug.Log("Exiting Stutter");
+        PauseAnimations();
         yield return null;
+    }
+
+    private void PauseAnimations()
+    {
+        iTween.Pause(gameObject, "moveTween");
     }
 
     public override void DoFixedUpdate()
     {
-        //if (target != null)
-        //{
-
-        //    if (targetShip.hasCaptured)
-        //    {
-        //        FleeTight();
-        //    }
-        //    else
-        //    {
-        //        SeekTight();
-        //    }
-
-
-        //}
+        
     }
 
     public void RotateTowardsTarget()
@@ -141,21 +140,7 @@ public class StutterFollow : FollowingBehavior
         }
     }
 
-    //public void SeekTight()
-    //{
-    //    Vector3 desiredDirection = (targetTransform.position - _transform.position).normalized * maxVelocity * maxVelocity;
-
-    //    _rigidbody.AddForce(_rigidbody.velocity + desiredDirection);
-    //    _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, maxVelocity);
-    //}
-
-    //public void FleeTight()
-    //{
-    //    Vector3 desiredDirection = (_transform.position - targetTransform.position).normalized * maxVelocity * maxVelocity;
-
-    //    rigidbody.AddForce(rigidbody.velocity + desiredDirection);
-    //    rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxVelocity);
-    //}
+    
 
     public void SetTarget(GameObject newTarget)
     {
@@ -173,6 +158,10 @@ public class StutterFollow : FollowingBehavior
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Destroy(gameObject);
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Tractor"))
+        {
+            iTween.Pause(gameObject);
         }
 
     }

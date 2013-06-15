@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour {
 	public GameObject target;
 	public float maxVelocity = 3;
 	public bool findPlayer = false;
+    public LayerMask CollisionMask;
 	
 	protected virtual void Start(){
 		InitCached();
@@ -29,7 +30,10 @@ public class Bullet : MonoBehaviour {
 	}
 	
 	protected virtual void OnCollisionEnter(Collision collision){
-		Destroy(gameObject);
+        if (Constants.IsInLayerMask(collision.gameObject, CollisionMask))
+        {
+            Destroy(gameObject);
+        }
 	}
 	
 	

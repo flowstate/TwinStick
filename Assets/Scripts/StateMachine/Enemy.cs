@@ -102,7 +102,11 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	List<State> stateList = new List<State>();
-	
+
+    private Color original;
+    private Color highlight;
+    public float HighlightTime;
+    private bool isHighlighted = false;
 	[HideInInspector]
 	public State state
 	{
@@ -139,7 +143,13 @@ public class Enemy : MonoBehaviour {
 	
 	StateBehavior currentBehavior;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+
+	    HighlightTime = 0.5f;
+	    original = renderer.material.color;
+	    highlight = Color.white;
+
 		_transform = transform;
 		_attack = _transform.GetComponent<AttackBehavior>();
 		_patrol = _transform.GetComponent<PatrolBehavior>();
@@ -150,6 +160,34 @@ public class Enemy : MonoBehaviour {
 		InitializeStates();
 		currentState = EnemyStates.PATROL;
 	}
+
+    void Highlight()
+    {
+        Debug.Log("I'm Highlighted!");
+        if (!isHighlighted)
+        {
+            StartCoroutine(TriggerHighlight());
+        }
+    }
+
+    IEnumerator TriggerHighlight()
+    {
+        PerformHighlight();
+        yield return new WaitForSeconds(HighlightTime);
+        EndHighlight();
+    }
+
+    private void EndHighlight()
+    {
+        renderer.material.color = original;
+        isHighlighted = false;
+    }
+
+    private void PerformHighlight()
+    {
+        isHighlighted = true;
+        renderer.material.color = highlight;
+    }
 
     private void CheckStates()
     {
@@ -227,7 +265,7 @@ public class Enemy : MonoBehaviour {
        
 		
 		
-		Debug.Log("Number of states in list: " + stateList.Count);
+		//Debug.Log("Number of states in list: " + stateList.Count);
 	}
 	
 	// Update is called once per frame
@@ -236,12 +274,12 @@ public class Enemy : MonoBehaviour {
 	public void SwitchState(EnemyStates newState){
 		
 		if(currentState == newState){
-			Debug.Log("CurrentState == newState");
+			//Debug.Log("CurrentState == newState");
 			return;
 		}
 		
 		// execute exit for current state
-		Debug.Log("Exiting current state: " + currentState.ToString());
+		//Debug.Log("Exiting current state: " + currentState.ToString());
 		StartCoroutine(state.enterState());
 		// discover and set up new state
 	    previousState = _currentState;
@@ -249,7 +287,7 @@ public class Enemy : MonoBehaviour {
 		
 		// execute enter for new state
 		StartCoroutine(state.exitState());
-		Debug.Log("Entering new state: " + currentState.ToString());
+		//Debug.Log("Entering new state: " + currentState.ToString());
 	}
 	
     public void GoToLastState()

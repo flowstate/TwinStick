@@ -11,7 +11,7 @@ public class TractorBeam : MonoBehaviour
     TractorZed parentTractor;
     public LayerMask canCapture;
     public LayerMask stateful;
-
+    public LayerMask HighlightMask;
     // Use this for initialization
     void Start()
     {
@@ -54,10 +54,32 @@ public class TractorBeam : MonoBehaviour
     {
         if (captive != null)
         {
+            if (!parentTractor.IsAimSlowed)
+            {
+                CastTheRay();
+            }
             captive.localPosition = Vector3.zero;
             captive.localRotation = Quaternion.identity;
 
         }
+
+       
+    }
+
+    private void CastTheRay()
+    {
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
+
+        if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity,
+                             HighlightMask)) return;
+
+        GameObject victim = hit.transform.gameObject;
+        Debug.Log("I HIT AN ENEMY");
+        victim.SendMessage("Highlight", SendMessageOptions.DontRequireReceiver);
+
+
+        StartCoroutine(parentTractor.FreezeAim());
     }
 
     void OnTriggerEnter(Collider col)

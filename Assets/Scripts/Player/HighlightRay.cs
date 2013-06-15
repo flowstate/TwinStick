@@ -34,7 +34,9 @@ public class HighlightRay : MonoBehaviour
                              collisionMask)) return;
 
         GameObject victim = hit.transform.gameObject;
+        Debug.Log("I HIT AN ENEMY");
         victim.SendMessage("Highlight", SendMessageOptions.DontRequireReceiver);
+        
 
         StartCoroutine(_tractor.FreezeAim());
     }

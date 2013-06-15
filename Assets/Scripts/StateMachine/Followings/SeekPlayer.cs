@@ -30,13 +30,13 @@ public class SeekPlayer : FollowingBehavior {
 	}
 	
 	public static IEnumerator EnterState(){
-		Debug.Log("Entering Seek");
+		//Debug.Log("Entering Seek");
 		
 		yield return null;
 	}
 	
 	public static IEnumerator ExitState(){
-		Debug.Log("Exiting Seek");
+		//Debug.Log("Exiting Seek");
 		yield return null;
 	}
 	

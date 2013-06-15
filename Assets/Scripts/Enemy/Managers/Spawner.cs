@@ -1,12 +1,16 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
 
     public List<GameObject> enemyPool;
     public List<SpawnSurface> surfaces;
+    public SpawnSurface bossSurface;
+    public GameObject bossToSpawn;
     public SpawnManager manager;
 
     [HideInInspector]
@@ -20,13 +24,14 @@ public class Spawner : MonoBehaviour
     public float startDelay = 0.1f;
     public int maxAlive = -1;
     public int spawnCap = -1;
-
-    bool doneSpawining = false;
+    public int maxSimultaneousSpawn = 3;
+    bool doneSpawning = false;
     bool allDead = false;
 
     public bool AllDone
     {
-        get { return doneSpawining && allDead; }
+        get { return doneSpawning && allDead;}
+        set { }
     }
 
     public float spawnTimer = 2.0f;
@@ -44,6 +49,11 @@ public class Spawner : MonoBehaviour
     public void BeginSpawning()
     {
         StartCoroutine(TimedSpawn());
+
+        if (bossSurface != null)
+        {
+            bossSurface.FlashUp();
+        }
     }
 
     private void InitSpawners()
@@ -53,7 +63,23 @@ public class Spawner : MonoBehaviour
             surf.target = childTarget;
             surf.owner = gameObject;
         }
+
+        if (bossSurface != null)
+        {
+            if (bossToSpawn == null)
+            {
+                throw new NullReferenceException("You haven't set a boss to spawn, dingus.");
+            }
+            else
+            {
+                bossSurface.objectToSpawn = bossToSpawn;
+            }
+            bossSurface.owner = gameObject;
+            bossSurface.target = childTarget;
+        }
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -80,14 +106,18 @@ public class Spawner : MonoBehaviour
             yield return new WaitForSeconds(spawnTimer);
 
             if (CanSpawn())
-                SpawnEnemy();
+                SpawnMax();
         }
+        
+        manager.SpawnerFinished();
+        yield return null;
 
     }
 
     public bool CanSpawn()
     {
-        if (!doneSpawining)
+        // if we're not done spawning yet
+        if (!doneSpawning)
         {
             bool spawnResult = true;
 
@@ -104,22 +134,25 @@ public class Spawner : MonoBehaviour
             {
                 if (totalSpawned >= spawnCap)
                 {
+        
                     spawnResult = false;
 
-                    doneSpawining = true;
+                    doneSpawning = true;
                 }
 
             }
             return spawnResult;
         }
+        // we ARE done spawning, let's make sure they're all alive
         else
         {
             if (liveEnemies == 0)
             {
                 allDead = true;
+        
                 if (manager != null)
                 {
-                    manager.SpawnerFinished();
+                    //manager.SpawnerFinished();
                 }
             }
         }
@@ -134,24 +167,53 @@ public class Spawner : MonoBehaviour
         liveEnemies = transform.childCount;
     }
 
+    void SpawnEnemy(int numToSpawn)
+    {
+        for (int i = 0; i < numToSpawn; i++)
+        {
+            SpawnEnemy();
+        }
+    }
+
+    void SpawnMax()
+    {
+        // if we have a maximum cap of children to have alive at once
+        if (maxAlive != -1)
+        {
+            int upperLimit = (maxSimultaneousSpawn < maxAlive - liveEnemies)
+                                 ? maxSimultaneousSpawn
+                                 : maxAlive - liveEnemies;
+
+            SpawnEnemy(Random.Range(1, upperLimit));
+        }
+        else
+        {
+            SpawnEnemy(Random.Range(1, maxSimultaneousSpawn));
+        }
+    }
+
     void SpawnEnemy()
     {
-        Debug.Log("Spawning Enemy");
 
-        // TODO: pick random
         int index = Random.Range(0, surfaces.Count - 1);
-        Debug.Log("Chosen index: " + index);
+
 
         while (surfaces[index].IsFlashing /*|| surfaces[index].SeatsTaken()*/)
         {
             index = Random.Range(0, surfaces.Count - 1);
         }
 
-        Debug.Log("Telling surface to spawn");
 
+        surfaces[index].objectToSpawn = SelectEnemyToSpawn();
         surfaces[index].FlashUp();
         totalSpawned++;
 
+    }
+
+    private GameObject SelectEnemyToSpawn()
+    {
+        int index = Random.Range(0, enemyPool.Count - 1);
+        return enemyPool[index];
     }
 
     GameObject PickRandomEnemy()

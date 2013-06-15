@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
@@ -42,7 +41,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																																																																																											GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																																																																																																																							GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
@@ -60,41 +59,6 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
-EndGlobal
-=======
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{746F39A1-2F7E-0AFF-6010-48A4E14F32D4}") = "TwinStick", "Assembly-CSharp-firstpass.csproj", "{8F0F4467-D96A-B466-0F42-C41F3DE4093F}"
-EndProject
-Project("{746F39A1-2F7E-0AFF-6010-48A4E14F32D4}") = "TwinStick", "Assembly-CSharp.csproj", "{4FFD60E1-053F-9CEC-A245-4619A539B082}"
-EndProject
-Project("{746F39A1-2F7E-0AFF-6010-48A4E14F32D4}") = "TwinStick", "Assembly-CSharp-Editor.csproj", "{7CF365F2-E7CA-AE68-C2AA-144821FA16ED}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8F0F4467-D96A-B466-0F42-C41F3DE4093F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F0F4467-D96A-B466-0F42-C41F3DE4093F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F0F4467-D96A-B466-0F42-C41F3DE4093F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F0F4467-D96A-B466-0F42-C41F3DE4093F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FFD60E1-053F-9CEC-A245-4619A539B082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FFD60E1-053F-9CEC-A245-4619A539B082}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FFD60E1-053F-9CEC-A245-4619A539B082}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FFD60E1-053F-9CEC-A245-4619A539B082}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CF365F2-E7CA-AE68-C2AA-144821FA16ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CF365F2-E7CA-AE68-C2AA-144821FA16ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CF365F2-E7CA-AE68-C2AA-144821FA16ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CF365F2-E7CA-AE68-C2AA-144821FA16ED}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-<<<<<<< HEAD
 																																																																																									GlobalSection(MonoDevelopProperties) = preSolution
 =======
 																																																																																										GlobalSection(MonoDevelopProperties) = preSolution
@@ -118,4 +82,3 @@ Global
 	EndGlobalSection
 
 EndGlobal
->>>>>>> Committed from Mac

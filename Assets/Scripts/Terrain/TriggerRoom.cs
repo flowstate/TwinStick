@@ -49,6 +49,7 @@ public class TriggerRoom : MonoBehaviour {
     {
         rManager.RaiseWalls();
         roomTriggered = true;
+        
     }
 
     void TriggerSpawns()

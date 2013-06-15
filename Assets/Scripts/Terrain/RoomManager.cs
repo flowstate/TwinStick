@@ -11,7 +11,8 @@ public class RoomManager : MonoBehaviour {
     public bool FinishedSpawning { set; get; }
     public bool FinishedLowering{set;get;}
     SpawnManager sManager;
-
+    public List<ExitTrigger> ExitTriggers;
+ 
 	// Use this for initialization
 	void Start () {
         sManager = gameObject.GetComponent<SpawnManager>();
@@ -39,6 +40,7 @@ public class RoomManager : MonoBehaviour {
 	{
 		foreach (RisingWall wall in childWalls)
 		{
+            
             wall.BeginRaise();
 
 		}
@@ -47,14 +49,28 @@ public class RoomManager : MonoBehaviour {
         FinishedRaising = false;
 	}
 
-    public void LowerWalls(){
-        foreach (RisingWall wall in childWalls)
-        {
-            wall.BeginLower();
+    public void RoomCleared()
+    {
+        FireExitTriggers();
 
+        //foreach (RisingWall wall in childWalls)
+        //{
+        //    wall.BeginLower();
+
+        //}
+        //lowerInProgress = true;
+        //FinishedLowering = false;
+
+
+
+    }
+
+    private void FireExitTriggers()
+    {
+        foreach (ExitTrigger trigger in ExitTriggers)
+        {
+            trigger.gameObject.SetActive(true);
         }
-        lowerInProgress = true;
-        FinishedLowering = false;
     }
 
 	// Update is called once per frame
@@ -74,24 +90,25 @@ public class RoomManager : MonoBehaviour {
         {
             if (sManager.enemiesDone)
             {
-                LowerWalls();
+                RoomCleared();
             }
         }
 
-        else if (lowerInProgress)
-        {
-            if (CheckLower())
-            {
-                FinishedLowering = true;
-                lowerInProgress = false;
-            }
+        //else if (lowerInProgress)
+        //{
+        //    if (CheckLower())
+        //    {
+        //        FinishedLowering = true;
+        //        lowerInProgress = false;
+        //    }
                 
-        }
+        //}
 	}
 
     private void StartSpawns()
     {
         spawnInProgress = true;
+        Debug.Log("START THE SPAWNS");
         sManager.StartSpawns();
     }
 

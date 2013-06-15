@@ -14,6 +14,7 @@ public class SpawnSurface : MonoBehaviour {
     public GameObject target;
     public GameObject owner;
     public LayerMask collisionMask;
+    public GameObject surface;
 
     public bool debug = false;
 
