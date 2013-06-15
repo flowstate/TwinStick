@@ -24,6 +24,7 @@ public class StutterFollow : FollowingBehavior
     public float TravelTime = 0.5f;
 
     private Hashtable moveTable;
+
     public override void DoAwake()
     {
         target = owner.target;
@@ -37,6 +38,30 @@ public class StutterFollow : FollowingBehavior
 
     }
 
+    public override void DoEnter()
+    {
+        Debug.Log("Starting timed stutter");
+        StartCoroutine("TimedStutter");
+    }
+
+
+    IEnumerator TimedStutter()
+    {
+        while (true)
+        {
+            Debug.Log("Stutter.");
+            GenerateMovement();
+            iTween.MoveBy(gameObject, moveTable);
+            yield return new WaitForSeconds(PauseTime);
+        }
+    }
+
+    public override void DoExit()
+    {
+        Debug.Log("Stopping timed stutter");
+        StopCoroutine("TimedStutter");
+    }
+
     private void InitTable()
     {
         moveTable = new Hashtable();
@@ -45,13 +70,10 @@ public class StutterFollow : FollowingBehavior
         moveTable.Add("lookTarget", target.transform);
         moveTable.Add("looktime", 0.2f);
         moveTable.Add("amount", aimVector);
-        Debug.Log("Original hashVector: " + moveTable["amount"].ToString());
+        
         moveTable.Add("time", TravelTime);
-        moveTable.Add("oncomplete", "MoveComplete");
-        moveTable.Add("delay", PauseTime);
         moveTable.Add("space", Space.World);
-        GenerateMovement();
-        iTween.MoveBy(gameObject, moveTable);
+        
 
     }
 
@@ -93,6 +115,8 @@ public class StutterFollow : FollowingBehavior
     public IEnumerator EnterState()
     {
         Debug.Log("Entering Stutter");
+        GenerateMovement();
+        iTween.MoveBy(gameObject, moveTable);
         ResumeAnimations();
         yield return null;
     }
@@ -102,7 +126,7 @@ public class StutterFollow : FollowingBehavior
         iTween.Resume(gameObject, "moveTween");
     }
 
-    public IEnumerator ExitState()
+    new public IEnumerator ExitState()
     {
 
         Debug.Log("Exiting Stutter");

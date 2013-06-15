@@ -33,13 +33,13 @@ public class FlungBehavior : StateBehavior
 
     
 
-    public static IEnumerator EnterState()
+    public IEnumerator EnterState()
     {
         Debug.Log("Entered flung behavior. Let's get flung.");
         yield break;
     }
 
-    public static IEnumerator ExitState()
+    public IEnumerator ExitState()
     {
         Debug.Log("Exited flung behavior. Let's get flung.");
         yield break;

@@ -49,7 +49,7 @@ public class CapturedBehavior : StateBehavior {
         bullet.rigidbody.AddForce(transform.forward.normalized * fireSpeed);
     }
 
-    new public static IEnumerator EnterState()
+    public IEnumerator EnterState()
     {
         Debug.Log("Entered Captured State. Holler");
         
@@ -57,7 +57,7 @@ public class CapturedBehavior : StateBehavior {
         yield break;
     }
 
-    new public static IEnumerator ExitState()
+    public IEnumerator ExitState()
     {
         
         yield break;

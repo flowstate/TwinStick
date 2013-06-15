@@ -19,6 +19,7 @@ public class TwinStickShipZed : MonoBehaviour
     private bool invincible, canPlayerControl;
     private float speedSquared;
     private Hashtable tweenTable;
+    public LayerMask HitMask;
 
     private float sqrStartDragVelocity,
                   sqrDragVelocityRange,
@@ -84,13 +85,8 @@ public class TwinStickShipZed : MonoBehaviour
                 moveSpeed -= 1;
             }
         }
-
-        //moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        //rigidbody.MovePosition(_transform.position + moveDirection * Time.deltaTime * moveSpeed);
+       
         CalculateDrag();
-        //Move();
-
-
 
     }
 
@@ -133,7 +129,6 @@ public class TwinStickShipZed : MonoBehaviour
     {
         
         // add force from the joystick
-        //Vector3 joystickForce = new Vector3(Horizontal, 0f, Vertical);
         if (canPlayerControl)
         {
             Vector3 joystickForce = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -166,13 +161,17 @@ public class TwinStickShipZed : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision collision)
     {
         _rigidbody.velocity = Vector3.zero;
 
         if (!invincible)
         {
-            HitTaken();
+            if (Constants.IsInLayerMask(collision.gameObject, HitMask))
+            {
+                HitTaken();    
+            }
+            
         }
         
     }

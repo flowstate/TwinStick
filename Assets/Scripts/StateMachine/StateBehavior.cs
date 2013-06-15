@@ -55,12 +55,14 @@ public class StateBehavior : MonoBehaviour {
 	public virtual void DoOnTriggerStay(Collider col){}
 	
 	public virtual void DoEnter(){}
-	
-	public static IEnumerator EnterState(){
+	public virtual void DoExit(){}
+	public virtual IEnumerator EnterState(){
+        Debug.Log("You're entering base state behavior");
 		yield break;
 	}
 	
-	public static IEnumerator ExitState(){
+	public virtual IEnumerator ExitState(){
+        Debug.Log("You're exiting base state behavior");
 		yield break;
 	}
 	

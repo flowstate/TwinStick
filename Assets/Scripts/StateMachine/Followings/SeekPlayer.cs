@@ -29,13 +29,13 @@ public class SeekPlayer : FollowingBehavior {
 		RotateTowardsTarget();
 	}
 	
-	public static IEnumerator EnterState(){
+	public IEnumerator EnterState(){
 		//Debug.Log("Entering Seek");
 		
 		yield return null;
 	}
 	
-	public static IEnumerator ExitState(){
+	public IEnumerator ExitState(){
 		//Debug.Log("Exiting Seek");
 		yield return null;
 	}

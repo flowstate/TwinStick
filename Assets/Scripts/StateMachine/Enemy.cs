@@ -38,6 +38,8 @@ public class Enemy : MonoBehaviour {
         public Action DoOnMouseOver = DoNothing;
         public Action DoOnMouseExit = DoNothing;
         public Action DoOnMouseDrag = DoNothing;
+	    public Action DoExit = DoNothing;
+	    public Action DoEnter = DoNothing;
         public Action DoOnGUI = DoNothing;
         public Func<IEnumerator> enterState = DoNothingCoroutine;
         public Func<IEnumerator> exitState = DoNothingCoroutine;
@@ -47,58 +49,86 @@ public class Enemy : MonoBehaviour {
         
 		
 		public State(StateBehavior behavior){
-			DoAwake = (Action)Delegate.CreateDelegate(DoUpdate.GetType(),behavior,"DoAwake");
-			DoUpdate = (Action)Delegate.CreateDelegate(DoUpdate.GetType(),behavior,"DoUpdate");
-			DoLateUpdate = (Action)Delegate.CreateDelegate(DoLateUpdate.GetType(),behavior,"DoLateUpdate");
-			DoFixedUpdate = (Action)Delegate.CreateDelegate(DoFixedUpdate.GetType(),behavior, "DoFixedUpdate");
+            try
+            {
+                DoAwake = (Action) Delegate.CreateDelegate(DoUpdate.GetType(), behavior, "DoAwake");
+                DoUpdate = (Action) Delegate.CreateDelegate(DoUpdate.GetType(), behavior, "DoUpdate");
+                DoLateUpdate = (Action) Delegate.CreateDelegate(DoLateUpdate.GetType(), behavior, "DoLateUpdate");
+                DoFixedUpdate = (Action) Delegate.CreateDelegate(DoFixedUpdate.GetType(), behavior, "DoFixedUpdate");
+                DoEnter = (Action)Delegate.CreateDelegate(DoUpdate.GetType(), behavior, "DoEnter");
+                DoExit = (Action)Delegate.CreateDelegate(DoUpdate.GetType(), behavior, "DoExit");
+                DoOnTriggerEnter =
+                    (Action<Collider>) Delegate.CreateDelegate(DoOnTriggerEnter.GetType(), behavior, "DoOnTriggerEnter");
+                DoOnTriggerExit =
+                    (Action<Collider>) Delegate.CreateDelegate(DoOnTriggerExit.GetType(), behavior, "DoOnTriggerExit");
+                DoOnTriggerStay =
+                    (Action<Collider>) Delegate.CreateDelegate(DoOnTriggerStay.GetType(), behavior, "DoOnTriggerStay");
+
+                DoOnCollisionEnter =
+                    (Action<Collision>)
+                    Delegate.CreateDelegate(DoOnCollisionEnter.GetType(), behavior, "DoOnCollisionEnter");
+                DoOnCollisionExit =
+                    (Action<Collision>)
+                    Delegate.CreateDelegate(DoOnCollisionExit.GetType(), behavior, "DoOnCollisionExit");
+                DoOnCollisionStay =
+                    (Action<Collision>)
+                    Delegate.CreateDelegate(DoOnCollisionStay.GetType(), behavior, "DoOnCollisionStay");
+
+                DoOnMouseEnter = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseEnter");
+                DoOnMouseUp = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseUp");
+                DoOnMouseDown = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseDown");
+                DoOnMouseOver = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseOver");
+                DoOnMouseExit = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseExit");
+                DoOnMouseDrag = (Action) Delegate.CreateDelegate(DoOnMouseEnter.GetType(), behavior, "DoOnMouseDrag");
+
+                MethodInfo[] infos =
+                    behavior.GetType()
+                            .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
+                                        BindingFlags.InvokeMethod | BindingFlags.Static);
+
+
+
+                MethodInfo enterMethod = behavior.GetType()
+                                                 .GetMethod("EnterState", System.Reflection.BindingFlags.Instance
+                                                                          | System.Reflection.BindingFlags.Public |
+                                                                          System.Reflection.BindingFlags.NonPublic |
+                                                                          System.Reflection.BindingFlags.InvokeMethod |
+                                                                          System.Reflection.BindingFlags.Static);
+
+                if (enterMethod != null)
+                {
+                    enterState = (Func<IEnumerator>) Delegate.CreateDelegate(enterState.GetType(), behavior, enterMethod);
+                }
+                else
+                {
+                    Debug.Log("Enter Method is null.");
+                }
+
+                MethodInfo exitMethod = behavior.GetType()
+                                                .GetMethod("EnterState", System.Reflection.BindingFlags.Instance
+                                                                         | System.Reflection.BindingFlags.Public |
+                                                                         System.Reflection.BindingFlags.NonPublic |
+                                                                         System.Reflection.BindingFlags.InvokeMethod |
+                                                                         System.Reflection.BindingFlags.Static);
+
+                if (exitMethod != null)
+                {
+                    exitState = (Func<IEnumerator>) Delegate.CreateDelegate(enterState.GetType(),behavior, enterMethod);
+                }
+                else
+                {
+                    Debug.Log("Exit Method is null.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Error creating state: " + behavior.GetType().ToString() + " - " + e.Message);
+                Debug.Log(e.StackTrace);
+            }
 			
-			DoOnTriggerEnter = (Action<Collider>)Delegate.CreateDelegate(DoOnTriggerEnter.GetType(),behavior, "DoOnTriggerEnter");
-			DoOnTriggerExit = (Action<Collider>)Delegate.CreateDelegate(DoOnTriggerExit.GetType(),behavior, "DoOnTriggerExit");
-			DoOnTriggerStay = (Action<Collider>)Delegate.CreateDelegate(DoOnTriggerStay.GetType(),behavior, "DoOnTriggerStay");
 			
-			DoOnCollisionEnter = (Action<Collision>)Delegate.CreateDelegate(DoOnCollisionEnter.GetType(),behavior, "DoOnCollisionEnter");
-			DoOnCollisionExit = (Action<Collision>)Delegate.CreateDelegate(DoOnCollisionExit.GetType(),behavior, "DoOnCollisionExit");
-			DoOnCollisionStay = (Action<Collision>)Delegate.CreateDelegate(DoOnCollisionStay.GetType(),behavior, "DoOnCollisionStay");
-			
-			DoOnMouseEnter = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseEnter");
-			DoOnMouseUp = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseUp");
-			DoOnMouseDown = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseDown");
-			DoOnMouseOver = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseOver");
-			DoOnMouseExit = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseExit");
-			DoOnMouseDrag = (Action)Delegate.CreateDelegate(DoOnMouseEnter.GetType(),behavior, "DoOnMouseDrag");
-			
-			MethodInfo enterMethod = behavior.GetType().GetMethod("EnterState",System.Reflection.BindingFlags.Instance 
-            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
-			
-			if(enterMethod != null){
-				enterState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),enterMethod);
-			}
-			
-			MethodInfo exitMethod = behavior.GetType().GetMethod("EnterState",System.Reflection.BindingFlags.Instance 
-            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
-			
-			if(exitMethod != null){
-				exitState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),enterMethod);
-			}
-			
-			/*enterState = (Func<IEnumerator>)Delegate.CreateDelegate(enterState.GetType(),behavior,"EnterState",System.Reflection.BindingFlags.Instance 
-            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);
-			exitState = (Func<IEnumerator>)Delegate.CreateDelegate(exitState.GetType(),behavior,"ExitState",System.Reflection.BindingFlags.Instance 
-            | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static);*/
 		}
 		
-		/*
-		
-		public object currentState;
-		//Stack of the enter state enumerators
-		public Stack<IEnumerator> enterStack;
-		//Stack of the exit state enumerators
-		public Stack<IEnumerator> exitStack;
-		//The amount of time that was spend in this state
-		//when pushed to the stack
-		public float time;
-		
-		public StateMachineBehaviourEx executingStateMachine; */
 	}
 	
 	List<State> stateList = new List<State>();
@@ -229,7 +259,7 @@ public class Enemy : MonoBehaviour {
                 {
                     // reflect on the behaviour
                 String bName = "_" + eState.ToString().ToLower();
-
+                
                 FieldInfo bField = GetType().GetField(bName);
                 if (bField == null)
                 {
@@ -240,17 +270,17 @@ public class Enemy : MonoBehaviour {
                 else
                 {
                     StateBehavior tempBehavior = (StateBehavior)bField.GetValue(this);
+                   
                     tempBehavior.SetOwner(this);
+                   
                     tempBehavior.DoAwake();
-                    if (tempBehavior == null)
-                    {
-                        Debug.Log("Null in else");
-                    }
-                    else
-                    {
-                        State tempState = new State(tempBehavior);
-                        stateList.Add(tempState);
-                    }
+                   
+                    
+                    State tempState = new State(tempBehavior);
+                   
+
+                    stateList.Add(tempState);
+                   
 
                 }
                 }
@@ -280,13 +310,15 @@ public class Enemy : MonoBehaviour {
 		
 		// execute exit for current state
 		//Debug.Log("Exiting current state: " + currentState.ToString());
-		StartCoroutine(state.enterState());
+		//StartCoroutine(state.exitState());
+	    state.DoExit();
 		// discover and set up new state
 	    previousState = _currentState;
 		_currentState = newState;
 		
 		// execute enter for new state
-		StartCoroutine(state.exitState());
+	    state.DoEnter();
+		//StartCoroutine(state.enterState());
 		//Debug.Log("Entering new state: " + currentState.ToString());
 	}
 	
