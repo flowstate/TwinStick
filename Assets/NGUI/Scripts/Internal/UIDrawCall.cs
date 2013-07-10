@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2012 Tasharen Entertainment
+// Copyright © 2011-2013 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -181,7 +181,7 @@ public class UIDrawCall : MonoBehaviour
 					mClippedMat.hideFlags = HideFlags.DontSave;
 				}
 				mClippedMat.shader = shader;
-				mClippedMat.mainTexture = mSharedMat.mainTexture;
+				mClippedMat.CopyPropertiesFromMaterial(mSharedMat);
 			}
 			else if (mClippedMat != null)
 			{

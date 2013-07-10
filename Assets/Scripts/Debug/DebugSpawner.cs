@@ -25,16 +25,57 @@ public class DebugSpawner : MonoBehaviour {
     public float startDelay = 0.1f;
     public int maxAlive = -1;
     public int spawnCap = -1;
-
+    public bool SpawnAutomatically = false;
+    public int maxSimultaneousSpawn = 5;
     bool doneSpawining = false;
     bool allDead = false;
-
+    private bool ScaleByManager = false;
 
     // Use this for initialization
     void Start()
     {
         ErrorChecks();
         InitSpawners();
+
+        if (SpawnAutomatically)
+        {
+            StartCoroutine(TimedSpawn());
+        }
+        
+    }
+
+    void SpawnEnemy(int numToSpawn)
+    {
+        for (int i = 0; i < numToSpawn; i++)
+        {
+            SpawnMax();
+        }
+    }
+
+    void SpawnMax()
+    {
+        // if we have a maximum cap of children to have alive at once
+        if (maxAlive != -1)
+        {
+            int upperLimit = (maxSimultaneousSpawn < maxAlive - liveEnemies)
+                                 ? maxSimultaneousSpawn
+                                 : maxAlive - liveEnemies;
+
+            SpawnEnemy(Random.Range(1, upperLimit));
+        }
+        else
+        {
+            SpawnEnemy(Random.Range(1, maxSimultaneousSpawn));
+        }
+    }
+
+    public IEnumerator TimedSpawn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(0.5f,2.0f));
+            SpawnEnemy();
+        }
     }
 
     private void ErrorChecks()

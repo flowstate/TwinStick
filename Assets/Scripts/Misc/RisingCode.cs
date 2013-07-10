@@ -6,7 +6,7 @@ public class RisingCode : MonoBehaviour {
     public float timeToRise = 0.5f;
     public float spawnDelay = 0.5f;
     GameObject childSpawn, caller, childTarget;
-
+    private Vector3 spawnScale;
 
 	// Use this for initialization
 	void Start () {
@@ -18,10 +18,11 @@ public class RisingCode : MonoBehaviour {
 	
 	}
 
-    public void Rise(Vector3 offset, GameObject mCaller, GameObject toSpawn, GameObject target)
+    public void Rise(Vector3 offset, GameObject mCaller, GameObject toSpawn, GameObject target, Vector3 spawnScale)
     {
         transform.parent = mCaller.transform;
         childSpawn = toSpawn;
+        this.spawnScale = spawnScale;
         caller = mCaller;
         // animate the rise
         childTarget = target;
@@ -31,6 +32,24 @@ public class RisingCode : MonoBehaviour {
         spawnTable.Add("position", offset);
         spawnTable.Add("oncomplete", "DoneRising");
 
+
+        iTween.MoveTo(gameObject, spawnTable);
+    }
+
+    public void Rise(Vector3 offset, GameObject mCaller, GameObject toSpawn, GameObject target)
+    {
+        transform.parent = mCaller.transform;
+        childSpawn = toSpawn;
+        spawnScale = childSpawn.transform.localScale;
+        caller = mCaller;
+        // animate the rise
+        childTarget = target;
+
+        Hashtable spawnTable = new Hashtable();
+        spawnTable.Add("time", timeToRise);
+        spawnTable.Add("position", offset);
+        spawnTable.Add("oncomplete", "DoneRising");
+        
 
         iTween.MoveTo(gameObject, spawnTable);
         
@@ -53,6 +72,7 @@ public class RisingCode : MonoBehaviour {
     void SpawnChild() 
     {
         GameObject spawned = Instantiate(childSpawn, transform.position, transform.rotation) as GameObject;
+        spawned.transform.localScale = spawnScale;
         spawned.transform.parent = caller.transform;
 
         Enemy spawnedEnemy = spawned.GetComponent<Enemy>();

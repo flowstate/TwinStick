@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2012 Tasharen Entertainment
+// Copyright © 2011-2013 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -12,5 +12,5 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class UIFilledSprite : UISprite
 {
-	override public Type type { get { return UISprite.Type.Filled; } }
+	public override Type type { get { return UISprite.Type.Filled; } }
 }

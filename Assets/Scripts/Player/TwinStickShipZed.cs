@@ -7,8 +7,8 @@ public class TwinStickShipZed : MonoBehaviour
     public int maxHealth = 3;
     public float moveSpeed = 10;
     public bool debug = false;
-    public float maxDrag = 3;
-    public GameObject mSpeed;
+    public float maxDrag = 6;
+    public UILabel HealthLabel;
     public float startDragVelocity = 10f;
     public float maxDragVelocity = 15f;
     public float maxTotalVelocity = 20f;
@@ -20,7 +20,10 @@ public class TwinStickShipZed : MonoBehaviour
     private float speedSquared;
     private Hashtable tweenTable;
     public LayerMask HitMask;
-
+    private Vector3 originalScale;
+    public UILabel ScaleLabel;
+    private Color originalColor;
+    private Color invincibleColor = Color.magenta;
     private float sqrStartDragVelocity,
                   sqrDragVelocityRange,
                   sqrMaxVelocity;
@@ -42,14 +45,24 @@ public class TwinStickShipZed : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        invincible = false;
         canPlayerControl = true;
         _transform = transform;
         _rigidbody = rigidbody;
         startingDrag = _rigidbody.drag;
         speedSquared = moveSpeed*moveSpeed;
+        originalScale = _transform.localScale;
         Initialize();
+        OutputHealth();
+    }
 
+    private void OutputHealth()
+    {
+        if (HealthLabel != null)
+        {
+            HealthLabel.text = currentHealth.ToString("0");
+            Debug.Log("OUTPUTTING HEALTH: " + currentHealth.ToString("0"));
+        }
     }
 
     void Initialize()
@@ -71,27 +84,14 @@ public class TwinStickShipZed : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (debug)
-        {
-            moveSpeedText.text = moveSpeed.ToString("00");
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                moveSpeed += 1;
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                moveSpeed -= 1;
-            }
-        }
-       
+     
         CalculateDrag();
 
     }
 
     private void CalculateDrag()
     {
+        // if the joysticks aren't dead
         if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.1f)
         {
             Move();
@@ -176,8 +176,33 @@ public class TwinStickShipZed : MonoBehaviour
         
     }
 
+    void PlayerSliderChange(float val)
+    {
+        if (val > 0)
+        {
+            ScalePlayer(val*2f);
+            ScaleTractor(val*2f);
+            if (ScaleLabel != null)
+            {
+                ScaleLabel.text = (val * 2f).ToString("0.00");
+
+            }
+        }
+    }
+
+    private void ScaleTractor(float p)
+    {
+        
+    }
+
+    private void ScalePlayer(float val)
+    {
+        _transform.localScale = new Vector3(originalScale.x * val, originalScale.y, originalScale.z * val );
+    }
+
     void HitTaken() {
         currentHealth--;
+        OutputHealth();
         if (currentHealth == 0)
         {
             Debug.Log("Oh man, I'm dead!");
@@ -194,9 +219,11 @@ public class TwinStickShipZed : MonoBehaviour
         // make invincible
         Debug.Log("I'm invincible!!");
         invincible = true;
+        renderer.material.color = invincibleColor;
         yield return new WaitForSeconds(2.0f);
         Debug.Log("I guess now I'm ... vincible?");
         invincible = false;
+        renderer.material.color = originalColor;
         // yield return
         // make not invincible
     }

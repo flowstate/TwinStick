@@ -14,9 +14,19 @@ public class SeekPlayer : FollowingBehavior {
 	Transform _transform;
 	Rigidbody _rigidbody;
 	Vector3 aimVector;
-	
+    public bool AddManagerSpeed = true;
+    private SceneManager sceneManager;
+
 	public override void DoAwake ()
 	{
+	    sceneManager = SceneManager.Instance;
+        if (AddManagerSpeed)
+        {
+            maxVelocity += sceneManager.EnemySpeed;
+            maxAcceleration += (sceneManager.EnemySpeed/2);
+
+            Debug.Log("New Max Velocity: " + maxVelocity.ToString("000"));
+        }
 		target = owner.target;
 		targetTransform = target.transform;
 		_transform = transform;
@@ -44,11 +54,13 @@ public class SeekPlayer : FollowingBehavior {
 	{
 		if(target != null){
 			
-			if(targetShip.hasCaptured){
-				FleeTight();
-			}else{
-				SeekTight();
-			}
+            SeekTight();
+
+            //if(targetShip.hasCaptured){
+            //    FleeTight();
+            //}else{
+            //    SeekTight();
+            //}
 			
 			
 		}

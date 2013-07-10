@@ -15,13 +15,15 @@ public class SpawnSurface : MonoBehaviour {
     public GameObject owner;
     public LayerMask collisionMask;
     public GameObject surface;
-
+    private SceneManager sceneManager;
+    public bool ScaleByManager = true;
     public bool debug = false;
 
 	// Use this for initialization
 	void Start () {
         IsFlashing = false;
         InitHash();
+	    sceneManager = SceneManager.Instance;
 	}
 
     private void InitHash()
@@ -45,9 +47,20 @@ public class SpawnSurface : MonoBehaviour {
 
     void CreateRiser()
     {
+        
         GameObject spawned = Instantiate(risingBox, originPoint.transform.position, transform.rotation) as GameObject;
         RisingCode riser = spawned.GetComponent<RisingCode>();
-        riser.Rise(spawnPoint.transform.position, owner, objectToSpawn, target);
+        if (ScaleByManager)
+        {
+            riser.Rise(spawnPoint.transform.position, owner, objectToSpawn, target, sceneManager.EnemyScaleVector);
+        }
+        else
+        {
+            riser.Rise(spawnPoint.transform.position, owner, objectToSpawn, target);    
+        }
+
+
+        
     }
 
     void Update()
