@@ -220,6 +220,7 @@
      <Compile Include="Assets\Scripts\StateMachine\StateBehavior.cs" />
      <Compile Include="Assets\Scripts\StateMachine\StateMachineBase.cs" />
      <Compile Include="Assets\Scripts\Terrain\BaseDoor.cs" />
+     <Compile Include="Assets\Scripts\Terrain\BreakableObject.cs" />
      <Compile Include="Assets\Scripts\Terrain\ExitTrigger.cs" />
      <Compile Include="Assets\Scripts\Terrain\RisingWall.cs" />
      <Compile Include="Assets\Scripts\Terrain\RoomManager.cs" />
