@@ -150,14 +150,25 @@ public class TwinStickShipZed : MonoBehaviour
 
     void Update()
     {
-        
-        if (Input.GetKeyUp(KeyCode.O)) {
-            HitTaken();
-        }
+        SetRotation();
+        //if (Input.GetKeyUp(KeyCode.O)) {
+        //    HitTaken();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Restart"))
+        //if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Restart"))
+        //{
+        //    Application.LoadLevel(Application.loadedLevel);
+        //}
+    }
+
+    private void SetRotation()
+    {
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            Application.LoadLevel(Application.loadedLevel);
+            Vector3 targetRotVector =
+                new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(targetRotVector);
+            _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, 1);
         }
     }
 

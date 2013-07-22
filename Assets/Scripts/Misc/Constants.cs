@@ -12,4 +12,13 @@ public static class Constants {
         return (against.value & objLayerMask) > 0;
     }
 
+    //#region QUEUES
+
+    //public static Vector3 LineBehindPosition(int position)
+    //{
+        
+    //}
+
+    //#endregion
+
 }

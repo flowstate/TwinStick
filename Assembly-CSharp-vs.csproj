@@ -204,6 +204,7 @@
      <Compile Include="Assets\Scripts\Projectiles\FiringCircle.cs" />
      <Compile Include="Assets\Scripts\Projectiles\SeekBullet.cs" />
      <Compile Include="Assets\Scripts\Projectiles\SplitBullet.cs" />
+     <Compile Include="Assets\Scripts\Queue\QueueManager.cs" />
      <Compile Include="Assets\Scripts\Shooters\MultiShootForward.cs" />
      <Compile Include="Assets\Scripts\Shooters\ShootForward.cs" />
      <Compile Include="Assets\Scripts\Shooters\StreamShooter.cs" />

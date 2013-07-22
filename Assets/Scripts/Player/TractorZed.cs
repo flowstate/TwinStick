@@ -7,9 +7,10 @@ public class TractorZed : MonoBehaviour
     private Transform _transform;
     public bool captured = false;
     public LayerMask mask;
-
+    public GameObject Ship;
+    private Transform shipTransform;
     public float maxDistance = 15;
-
+    private GameObject beam;
     public float minDistance = 2;
     private TwinStickShipZed parentShip;
     public float rotateSpeed = 60.0f;
@@ -21,17 +22,26 @@ public class TractorZed : MonoBehaviour
     {
         _transform = transform;
         _beamTransform = _transform.Find("TractorArea");
-        parentShip = _transform.parent.GetComponent<TwinStickShipZed>();
+        beam = _beamTransform.gameObject;
+        //parentShip = _transform.parent.GetComponent<TwinStickShipZed>();
+        parentShip = Ship.GetComponent<TwinStickShipZed>();
+        shipTransform = Ship.transform;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        SetPosition();
         if (!IsAimSlowed)
         {
             SetRotation();
         }
         
+    }
+
+    private void SetPosition()
+    {
+        _transform.position = shipTransform.position;
     }
 
     private void SetRotation()
@@ -42,6 +52,11 @@ public class TractorZed : MonoBehaviour
                 new Vector3(Input.GetAxis("FireHorizontal"), 0, Input.GetAxis("FireVertical")).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(targetRotVector);
             _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, 1);
+        }
+
+        else
+        {
+            
         }
     }
 
