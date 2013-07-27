@@ -92,18 +92,20 @@ public class TwinStickShipZed : MonoBehaviour
     private void CalculateDrag()
     {
         // if the joysticks aren't dead
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) >= 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) >= 0.1f)
+        if (Constants.IsLeftStickAlive(0.1f))
         {
             Move();
 
             float velSqr = _rigidbody.velocity.sqrMagnitude;
 
+            // if the velocity is over the drag threshold
             if (velSqr > sqrStartDragVelocity)
             {
                 _rigidbody.drag = Mathf.Lerp(startingDrag, maxDrag,
                                              Mathf.Clamp01((velSqr - sqrStartDragVelocity)/
                                                            sqrDragVelocityRange));
 
+                // if velocity is over max velocity
                 if (velSqr > sqrMaxVelocity)
                 {
                     _rigidbody.velocity = _rigidbody.velocity.normalized*maxTotalVelocity;
@@ -151,22 +153,14 @@ public class TwinStickShipZed : MonoBehaviour
     void Update()
     {
         SetRotation();
-        //if (Input.GetKeyUp(KeyCode.O)) {
-        //    HitTaken();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Restart"))
-        //{
-        //    Application.LoadLevel(Application.loadedLevel);
-        //}
+        
     }
 
     private void SetRotation()
     {
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (Constants.IsLeftStickAlive(0.1f))
         {
-            Vector3 targetRotVector =
-                new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+            Vector3 targetRotVector = Constants.GetLeftStickXZ().normalized;
             Quaternion targetRotation = Quaternion.LookRotation(targetRotVector);
             _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, 1);
         }
@@ -192,18 +186,13 @@ public class TwinStickShipZed : MonoBehaviour
         if (val > 0)
         {
             ScalePlayer(val*2f);
-            ScaleTractor(val*2f);
+            
             if (ScaleLabel != null)
             {
                 ScaleLabel.text = (val * 2f).ToString("0.00");
 
             }
         }
-    }
-
-    private void ScaleTractor(float p)
-    {
-        
     }
 
     private void ScalePlayer(float val)
@@ -228,15 +217,15 @@ public class TwinStickShipZed : MonoBehaviour
     IEnumerator InvincibilityFrames()
     {
         // make invincible
-        Debug.Log("I'm invincible!!");
+        
         invincible = true;
         renderer.material.color = invincibleColor;
         yield return new WaitForSeconds(2.0f);
-        Debug.Log("I guess now I'm ... vincible?");
+        
         invincible = false;
         renderer.material.color = originalColor;
-        // yield return
-        // make not invincible
+        yield return null;
+        
     }
 
     public void ResumePlayerControl()

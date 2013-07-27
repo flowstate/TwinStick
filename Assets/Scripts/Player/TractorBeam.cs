@@ -12,6 +12,8 @@ public class TractorBeam : MonoBehaviour
     public LayerMask canCapture;
     public LayerMask stateful;
     public LayerMask HighlightMask;
+    public QueueManager QManager;
+
     // Use this for initialization
     void Start()
     {
@@ -30,6 +32,7 @@ public class TractorBeam : MonoBehaviour
     {
         if (!isActive)
         {
+        
             if (captive == null)
             {
                 isActive = true;
@@ -38,13 +41,24 @@ public class TractorBeam : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fling"))
                 {
+                    Debug.Log("PRESSED FLING!");
                     doFling = true;
                 }
+                
             }
         }
         else
         {
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            GetFromQueue();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SendToQueue();
         }
 
     }
@@ -66,6 +80,21 @@ public class TractorBeam : MonoBehaviour
        
     }
 
+    // send a captured enemy to the queue
+    public void SendToQueue()
+    {
+        if (null != captive)
+        {
+            QManager.Push(captive.gameObject);
+            CaptiveGone();
+        }
+    }
+
+    public void GetFromQueue()
+    {
+        StartCoroutine(BringToTheFold(QManager.Pop().transform));
+    }
+
     private void CastTheRay()
     {
         RaycastHit hit;
@@ -75,7 +104,7 @@ public class TractorBeam : MonoBehaviour
                              HighlightMask)) return;
 
         GameObject victim = hit.transform.gameObject;
-        Debug.Log("I HIT AN ENEMY");
+        
         victim.SendMessage("Highlight", SendMessageOptions.DontRequireReceiver);
 
 
@@ -94,35 +123,48 @@ public class TractorBeam : MonoBehaviour
         {
             if (isActive)
             {
-                col.transform.parent = _transform;
-                captive = col.transform;
-                SetCaptured(true);
-
-                if (IsInLayerMask(col.gameObject, stateful))
-                {
-                    Debug.Log("It's an enemy we captured!");
-                    Enemy enemy = col.gameObject.GetComponent<Enemy>();
-                    enemy.currentState = EnemyStates.CAPTURED;
-                }
-                captive.gameObject.layer = LayerMask.NameToLayer("PlayerBullets");
-                isActive = false;
-                //StartCoroutine(BringToTheFold(col.transform));
+                CaptureEnemy(col.gameObject);
             }
         }
 
 
     }
 
+    private void CaptureEnemy(GameObject shawshank)
+    {
+        shawshank.transform.parent = _transform;
+        captive = shawshank.transform;
+        SetCaptured(true);
+
+        if (Constants.IsInLayerMask(shawshank, stateful))
+        {
+            Enemy enemy = shawshank.GetComponent<Enemy>();
+            enemy.currentState = EnemyStates.CAPTURED;
+        }
+
+        shawshank.layer = LayerMask.NameToLayer("PlayerBullets");
+        isActive = false;
+    }
+
     void Fling()
     {
+        captive.rigidbody.velocity = Vector3.zero;
+
         if (IsInLayerMask(captive.gameObject, stateful))
         {
-            Debug.Log("FLUNG THE ENEMY!");
             Enemy enemy = captive.GetComponent<Enemy>();
             enemy.currentState = EnemyStates.FLUNG;
         }
-        captive.parent = null;
+
         captive.rigidbody.AddExplosionForce(1000, _transform.parent.transform.position, 10);
+        CaptiveGone();
+        
+    }
+
+    void CaptiveGone()
+    {
+        captive.parent = null;
+
         captive = null;
         SetCaptured(false);
         isActive = true;
@@ -153,9 +195,11 @@ public class TractorBeam : MonoBehaviour
 
     IEnumerator BringToTheFold(Transform sheep)
     {
+        captive = sheep;
         isActive = false;
+        Debug.Log("Set active to false");
         float elapsedTime = 0.0f;
-
+        sheep.parent = _transform;
         while (elapsedTime <= foldTime)
         {
             elapsedTime += Time.deltaTime;

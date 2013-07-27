@@ -23,7 +23,6 @@ public class TractorZed : MonoBehaviour
         _transform = transform;
         _beamTransform = _transform.Find("TractorArea");
         beam = _beamTransform.gameObject;
-        //parentShip = _transform.parent.GetComponent<TwinStickShipZed>();
         parentShip = Ship.GetComponent<TwinStickShipZed>();
         shipTransform = Ship.transform;
     }
@@ -46,14 +45,14 @@ public class TractorZed : MonoBehaviour
 
     private void SetRotation()
     {
-        if (Input.GetAxis("FireHorizontal") != 0 || Input.GetAxis("FireVertical") != 0)
+        if (Constants.IsRightStickAlive(0.1f))
         {
-            Vector3 targetRotVector =
-                new Vector3(Input.GetAxis("FireHorizontal"), 0, Input.GetAxis("FireVertical")).normalized;
+            Vector3 targetRotVector = Constants.GetRightStickXZ().normalized;
             Quaternion targetRotation = Quaternion.LookRotation(targetRotVector);
             _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, 1);
         }
 
+        // if we don't have a captive, make the tractor... invisible?
         else
         {
             
@@ -65,14 +64,14 @@ public class TractorZed : MonoBehaviour
     {
 
         IsAimSlowed = true;
-        Vector2 initial = new Vector2(Input.GetAxis("FireHorizontal"), Input.GetAxis("FireVertical"));
+        Vector2 initial = Constants.GetRightTwo();
         Vector2 current = initial;
 
         while (Mathf.Abs(Vector2.Angle(initial, current)) < 5f)
         {
             yield return null;
 
-            current = new Vector2(Input.GetAxis("FireHorizontal"), Input.GetAxis("FireVertical"));
+            current = Constants.GetRightTwo();
         }
 
         IsAimSlowed = false;

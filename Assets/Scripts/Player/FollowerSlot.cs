@@ -15,7 +15,7 @@ public class FollowerSlot : MonoBehaviour
     public KeyCode SwitchPosition;
     private bool doLerp = true;
     public int CurrentPosition;
-    private GameObject _filler = null;
+    private GameObject _filler;
 
     public GameObject Filler
     {
@@ -121,5 +121,9 @@ public class FollowerSlot : MonoBehaviour
         return (desiredPosition - _transform.position).sqrMagnitude > 0.1f;
     }
 
-    
+    public void DestroyFiller()
+    {
+        Destroy(_filler);
+        _filler = null;
+    }
 }
