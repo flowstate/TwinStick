@@ -193,6 +193,7 @@
      <Compile Include="Assets\Scripts\Misc\SeekTarget.cs" />
      <Compile Include="Assets\Scripts\Misc\SelectiveExplodeOnCollision.cs" />
      <Compile Include="Assets\Scripts\Misc\TestWallBounce.cs" />
+     <Compile Include="Assets\Scripts\Player\DrawShotLine.cs" />
      <Compile Include="Assets\Scripts\Player\FollowerSlot.cs" />
      <Compile Include="Assets\Scripts\Player\HighlightRay.cs" />
      <Compile Include="Assets\Scripts\Player\TractorBeam.cs" />
@@ -222,6 +223,9 @@
      <Compile Include="Assets\Scripts\StateMachine\Patrols\WallBouncePatrol.cs" />
      <Compile Include="Assets\Scripts\StateMachine\StateBehavior.cs" />
      <Compile Include="Assets\Scripts\StateMachine\StateMachineBase.cs" />
+     <Compile Include="Assets\Scripts\TargetPractice\ShootingTarget.cs" />
+     <Compile Include="Assets\Scripts\TargetPractice\TargetManager.cs" />
+     <Compile Include="Assets\Scripts\TargetPractice\TargetProjectile.cs" />
      <Compile Include="Assets\Scripts\Terrain\BaseDoor.cs" />
      <Compile Include="Assets\Scripts\Terrain\BreakableObject.cs" />
      <Compile Include="Assets\Scripts\Terrain\ExitTrigger.cs" />
